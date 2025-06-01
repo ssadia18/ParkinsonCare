@@ -1,10 +1,10 @@
 :root {
   --bg: #f2e3f7;
-  --text: #f8eaff;
+  --text: #9c80ac;
   --accent: #6366f1;
   --card-bg: white;
   --dark-bg: #201127;
-  --dark-text: #f5e2fd;
+  --dark-text: #ece2f1;
   --dark-card-bg: #1f2937;
   --severity-low: #2ecc71;
   --severity-moderate: #f39c12;
@@ -143,7 +143,7 @@ body.dark {
 .back-button {
   background: none;
   border: none;
-  color: var(--accent);
+  color: white;
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 1rem;
