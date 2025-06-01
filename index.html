@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+ <div class="bg-image"></div>
+  <nav class="navbar">
+    <div class="logo">🧠 ParkinsonCare</div>
+    <div class="nav-items">
+      <div id="authButtons">
+        <button onclick="scrollToSection('login')">Login/Register</button>
+      </div>
+      <div id="userInfo" class="hidden">
+        <span>Welcome, <span id="userName"></span></span>
+        <button onclick="handleLogout()" id="logoutButton">Logout</button>
+      </div>
+      <button onclick="scrollToSection('home')">Home</button>
+      <button onclick="scrollToSection('education')">Education</button>
+      <button onclick="scrollToSection('assessments')">Assessments</button>
+      <button onclick="scrollToSection('doctors')">Doctors</button>
+      <button onclick="scrollToSection('about')">About</button>
+      <button id="themeToggle">🌗</button>
+    </div>
+  </nav>
+
+  <div id="login" class="section auth-section">
+    <h2>Login</h2>
+    <form id="loginForm" class="auth-form">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required>
+      </div>
+      <button type="submit" class="button">Login</button>
+      <p class="auth-switch">
+        Don't have an account? <a href="#" onclick="showSection('register')">Register here</a>
+      </p>
+    </form>
+  </div>
+
+  <div id="register" class="section auth-section">
+    <h2>Register</h2>
+    <form id="registerForm" class="auth-form">
+      <div class="form-group">
+        <label for="registerUsername">Username</label>
+        <input type="text" id="registerUsername" required>
+      </div>
+      <div class="form-group">
+        <label for="registerEmail">Email</label>
+        <input type="email" id="registerEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="registerPassword">Password</label>
+        <input type="password" id="registerPassword" required>
+      </div>
+      <button type="submit" class="button">Register</button>
+      <p class="auth-switch">
+        Already have an account? <a href="#" onclick="showSection('login')">Login here</a>
+      </p>
+    </form>
+  </div>
+
+  <section id="home" class="section active">
+    </div>
+    <div class="hero-content">
+      <h1>Detect Parkinson's Early</h1>
+      <p>Voice & Health-based Smart Screening</p>
+      <button onclick="scrollToSection('assessments')"class="button outline">
+        Start Assessment
+      </button>
+    </div>
+  </section>
+
+  <section id="education" class="section">
+    <button onclick="goBack()" class="back-button">← Back</button>
+    <h2>Learn About Parkinson's Disease</h2>
+    <div id="educationalContent" class="educational-content"></div>
+  </section>
+
+  <section id="assessments" class="section">
+    <h2>Assessment Options</h2>
+    <div class="cards">
+      <div class="card" onclick="showVoiceAnalysis()">
+        <h3>🎤 Voice Analysis</h3>
+        <p>Record/upload your voice for risk prediction.</p>
+      </div>
+      <div class="card" onclick="showHealthForm()">
+        <h3>📊 Health Metrics</h3>
+        <p>Use health data to evaluate Parkinson's likelihood.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="voiceAnalysis" class="section">
+    <button onclick="goBack()" class="back-button">← Back</button>
+    <h2>Voice Analysis</h2>
+    <div class="voice-analysis-container">
+      <div class="voice-options">
+        <button id="recordButton" class="button">Start Recording</button>
+        <input type="file" id="audioUpload" accept="audio/*" style="display: none;">
+        <button onclick="document.getElementById('audioUpload').click()" class="button outline">Upload Audio</button>
+      </div>
+      <div id="recordingProgress" class="recording-progress hidden">
+        <div class="progress-fill"></div>
+      </div>
+      <div id="audioPreview" class="audio-preview hidden">
+        <audio id="audioPlayer" controls></audio>
+        <button id="submitRecording" class="button">Analyze Recording</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="healthForm" class="section">
+    <button onclick="goBack()" class="back-button">← Back</button>
+    <h2>Health Assessment</h2>
+    <form id="healthAssessmentForm" class="health-form">
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" min="18" max="120" required>
+      </div>
+      <div class="form-group">
+        <label for="heartRate">Resting Heart Rate (bpm)</label>
+        <input type="range" id="heartRate" min="40" max="120" value="72">
+        <span class="range-value">72</span>
+      </div>
+      <div class="form-group">
+        <label for="spO2">Blood Oxygen Level (SpO2 %)</label>
+        <input type="range" id="spO2" min="80" max="100" value="98">
+        <span class="range-value">98</span>
+      </div>
+      <div class="form-group">
+        <label for="muscleStiffness">Muscle Stiffness (0-10 scale)</label>
+        <input type="range" id="muscleStiffness" min="0" max="10" value="2">
+        <span class="range-value">2</span>
+      </div>
+      <div class="form-group">
+        <label for="caloriesBurnt">Daily Calories Burnt</label>
+        <input type="range" id="caloriesBurnt" min="500" max="5000" value="2000">
+        <span class="range-value">2000</span>
+      </div>
+      <div class="form-group">
+        <label for="sleep">Hours of Sleep (last night)</label>
+        <input type="range" id="sleep" min="0" max="12" step="0.5" value="7.5">
+        <span class="range-value">7.5</span>
+      </div>
+      <div class="form-group">
+        <label for="stepCount">Daily Step Count</label>
+        <input type="range" id="stepCount" min="0" max="20000" value="5000">
+        <span class="range-value">5000</span>
+      </div>
+      <button type="submit" class="button">Submit Assessment</button>
+    </form>
+  </section>
+
+  <section id="results" class="section">
+    <button onclick="goBack()" class="back-button">← Back</button>
+    <h2>Assessment Results</h2>
+    <div class="results-container">
+      <div class="result-card">
+        <h3>Risk Assessment</h3>
+        <div id="predictionValue" class="prediction-value"></div>
+        <div id="severityLevel" class="severity-level"></div>
+        <div class="assessment-date">Assessment Date: <span id="assessmentDate"></span></div>
+      </div>
+      <div class="recommendations-card">
+        <h3>Recommendations</h3>
+        <ul id="recommendationsList"></ul>
+      </div>
+      <button onclick="downloadReport()" class="button">Download Report</button>
+    </div>
+  </section>
+
+  <section id="doctors" class="section">
+    <h2>🩺 What Doctors Say</h2>
+    <div class="testimonial-card">
+      <p>"Early detection through voice and movement analysis is a breakthrough in Parkinson's care."</p>
+      <span>- Dr. Mehta, Neurologist</span>
+    </div>
+    <div class="testimonial-card">
+      <p>"Combining AI with clinical expertise ensures better outcomes and timely intervention."</p>
+      <span>- Dr. Kumar, Movement Specialist</span>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>Creators</h2>
+    <div class="about-card">
+      <div class="about-content">
+        <h2>About the Creators</h2>
+        <h3>Sadia Sajid</h3>
+        <p>MGIT Student with roll no. 21261A6654. Worked on frontend and logic.</p>
+        <h3>KSV Rakesh</h3>
+        <p>A passionate developer creating AI-powered tools for better healthcare accessibility and diagnostics.</p>
+      </div>
+  </section>
+
+  <footer>
+    <p>© 2025 ParkinsonCare. All rights reserved.</p>
+  </footer>
+
+  <script src="education.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
